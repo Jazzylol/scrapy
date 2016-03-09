@@ -1,0 +1,2 @@
+# scrapy
+base data collector
