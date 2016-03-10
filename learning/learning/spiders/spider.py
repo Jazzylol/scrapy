@@ -5,17 +5,17 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
 from scrapy.http import Request
-from scrapy.selector import HtmlXPathSelector
+from scrapy.selector import HtmlXPathSelector, Selector
 from scrapy.spiders import BaseSpider
 from .. import items
 
 
 class LearningSpider(BaseSpider):
 	def parse_item(self, response):
-		hxs = HtmlXPathSelector(response)
-		movie_name = hxs.select("//div[@id='content']/h1/span[1]/text()").extract()
-		movie_director = hxs.select("//div[@id='info']/span[1]/span[2]/a/text()").extract()
-		movie_writer = hxs.select("//div[@id='info']/span[2]/span[2]/a/text()").extract()
+		hxs = Selector(response)
+		movie_name = hxs.select("//div[@id='content']/h1/span[1]/text()").xpath()
+		movie_director = hxs.select("//div[@id='info']/span[1]/span[2]/a/text()").xpath()
+		movie_writer = hxs.select("//div[@id='info']/span[2]/span[2]/a/text()").xpath()
 		# 暂时就写3个
 		item = items.LearningItem()
 		item['movie_name'] = ''.join(movie_name).strip().replace(
@@ -27,8 +27,8 @@ class LearningSpider(BaseSpider):
 		print str(item).decode("unicode_escape")
 
 	def parse(self, response):
-		hxs = HtmlXPathSelector(response)
-		movie_link = hxs.select('//*[@id="content"]/div/div[1]/div[2]/table[1]/tr/td[1]/a/@href').extract()
+		hxs = Selector(response)
+		movie_link = hxs.select('//*[@id="content"]/div/div[1]/div[2]/table[1]/tr/td[1]/a/@href').xpath()
 		if movie_link:
 			yield Request(movie_link[0], callback=self.parse_item)
 
