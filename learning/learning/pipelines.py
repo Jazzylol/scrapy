@@ -10,7 +10,7 @@ import json
 
 class LearningPipeline(object):
 	def __init__(self):
-		self.file = codecs.open("data.dat", encoding='utf-8')
+		self.file = codecs.open("D:\\b.txt", encoding='utf-8')
 
 	def process_item(self, item, spider):
 		line = json.dump(dict(item)) + '\n'
